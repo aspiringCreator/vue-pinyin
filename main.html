@@ -1,0 +1,292 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-11-30 15:48:30
+ * @LastEditTime: 2021-12-17 13:47:15
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \ccit-webe:\创正2021年\创正11月\拼音小游戏\index.html
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>首页</title>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        define = null;
+        require = null;
+    </script>
+
+
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script src="https://code.createjs.com/1.0.0/preloadjs.min.js"></script>
+
+    <script src="js/lib-flexible.js"></script>
+    <script src="./js/data.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        /*采用定位的方式，让小球运动起来*/
+        #main {
+            margin: 0px auto;
+            position: relative;
+        }
+
+        /*小球的样式*/
+        #main div.item {
+            overflow: hidden;
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            opacity: 0.5;
+            border-radius: 50%;
+            background-color: transparent !important;
+            /* background: url(images/pop.png) no-repeat !important;
+            background-size: 100% 100%; */
+        }
+
+        #main div.item img {
+            display: block;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        table {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 111;
+        }
+
+        table td {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <audio style="display: none;" id="bg-music" src="./images/drum_1.mp3" autoplay="autoplay" controls></audio> -->
+    <script>
+
+    </script>
+    <!-- 开始页面 -->
+    <div id="canvas" class="main m" style="display: none;">
+        <div class="text"><img src="./images/text.png" alt=""></div>
+        <div class="start-btn">
+
+        </div>
+    </div>
+    <!-- 游戏开始页面 -->
+    <div class="start-game m" style="opacity: 0;">
+        <div id="main">
+            <div class="item"><img src="images/pop.png" alt=""></div>
+            <div class="item"><img src="images/pop.png" alt=""></div>
+            <div class="item"><img src="images/pop.png" alt=""></div>
+            <div class="item"><img src="images/pop.png" alt=""></div>
+        </div>
+        <!-- 蒙层 -->
+        <div class="meng"></div>
+        <!-- 头像 -->
+        <div class="preson z"><img src="images/person.png" alt=""></div>
+        <!-- 血条 -->
+        <div class="blood z">
+            <div class="xin"></div>
+            <div class="xin"></div>
+            <div class="xin"></div>
+            <!-- <div class="text fon">x6</div> -->
+        </div>
+        <!-- 金币 -->
+        <!-- <div class="gold z"> -->
+        <div class="money z"></div>
+        <div class="text fon z"><span>+</span>200</div>
+        <!-- <div class="addIcon z"></div> -->
+        <!-- </div> -->
+        <!-- 减速 -->
+        <div class="speed z"></div>
+        <!-- 炸弹 -->
+        <div class="boom z"></div>
+        <!-- 语音按钮 -->
+        <div class="voice z" id="dom"></div>
+        <!-- yun -->
+        <div class="cloud"></div>
+        <!-- 小狗 -->
+        <div class="dog z"></div>
+        <!-- 圈 -->
+        <div class="circle circle1"></div>
+        <div class="circle circle2"></div>
+        <div class="circle circle3"></div>
+        <div class="circle circle4"></div>
+        <div class="circle circle5"></div>
+        <!-- 草地 -->
+        <div class="grassland"></div>
+
+        <!-- 词汇 -->
+        <div class="words" style="opacity: 0;">
+            <div class="list fon">shu</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu baoyi ge xin shu baoyi</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu bao</div>
+            <div class="list fon">yi ge xin shu bao</div>
+        </div>
+        <!-- <div style="position: absolute;top: 5%; z-index: 111111;left: 19%;">
+            <button class="btn btn_primary" id="startRecord">开始录音接口</button>
+            <button class="btn btn_primary" id="stopRecord">停止录音接口</button>
+            <button class="btn btn_primary" id="playVoice">播放语音接口</button>
+            <button class="btn btn_primary" id="translateVoice">识别音频并返回识别结果接口</button>
+        </div> -->
+
+        <style>
+            .btn {
+                width: 100%;
+                border: 0;
+                outline: 0;
+                -webkit-appearance: none;
+                margin-bottom: 15px;
+                background-color: #04be02;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 14px;
+                padding-right: 14px;
+                font-size: 18px;
+                text-align: center;
+                text-decoration: none;
+                overflow: visible;
+                height: 42px;
+                border-radius: 5px;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                color: #ffffff;
+                line-height: 42px;
+                -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+            }
+        </style>
+    </div>
+    </div>
+    <!-- <canvas id="canvas" style="display: none;"></canvas> -->
+    <table width=" 100%" height="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#87CEEB">
+        <tr>
+            <td align="center" style="font-size:40px;" id='aas'>加载中....<span id="progress">0%</span>
+                <p>
+            <td>
+        </tr>
+    </table>
+
+    <script src="js/comment.js"></script>
+    <script>
+        $(function () {
+            // 获取div的高度\
+            document.body.addEventListener('touchmove', function (e) {
+                e.preventDefault();
+            }, {
+                passive: false
+            }); //passive 参数不能省略，用来兼容ios和android
+            // window.clearInterval(timer1)
+            var intervalBox; //interval定时器存储器
+            var num = -$(".words").innerHeight()
+            //设置interval定时器
+            var winWidth = window.innerWidth;
+            $(".list").each(function (index) {
+                var w = winWidth - $('.list').eq(index).innerWidth()
+                var ran = Math.ceil(Math.random() * (w - 20))
+                // console.log(ran);
+                $('.list').eq(index).css('marginLeft', ran + 'px')
+                //根据形参index设置元素的title属性
+                // console.log($('.list').eq(index).innerWidth());
+            })
+
+            function startInterval() {
+
+                console.log(num);
+                $('.words').css('top', num + 'px')
+                intervalBox = setInterval(() => {
+                    num++
+                    if (num > (Math.ceil($(".start-game").innerHeight() - 10))) {
+                        alert('结束')
+                        clearInterval(intervalBox)
+                    }
+                    // console.log(Math.ceil($(".start-game").innerHeight() + 10));
+                    $('.words').css('top', num + 'px')
+                    $('.words').css('opacity', 1)
+                    // console.log(num);
+                }, 40);
+            }
+            //结束interval定时器
+            function stopInterval() {
+                clearInterval(intervalBox); //清除interval定时器
+            }
+            //开始按钮进入游戏页面
+            $('.start-btn').click(function () {
+                $('#canvas').hide()
+                $('.start-game').css('opacity', '1')
+                startInterval()
+            })
+            //单词从头开始下落
+            $('.boom').click(function () {
+                stopInterval()
+                console.log(1);
+                num = -$(".words").innerHeight()
+                startInterval()
+            })
+            //暂停单词下落
+            $(".speed").on('click', function () {
+                if (intervalBox) {
+                    intervalBox = clearInterval(intervalBox);
+                } else {
+                    return;
+                }
+            })
+            //继续单词下落
+            $(".preson").on('click', function () {
+                if (intervalBox) {
+                    return intervalBox;
+                } else {
+                    startInterval()
+                }
+            })
+        })
+    </script>
+    <script>
+
+    </script>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

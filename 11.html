@@ -1,0 +1,121 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-12-16 13:55:12
+ * @LastEditTime: 2021-12-21 14:36:00
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \ccit-webe:\创正2021年\创正11月\拼音小游戏\11.html
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="./css/Boom.css">
+    <title>BoomJS演示Demo</title>
+</head>
+
+<style>
+
+</style>
+
+<body>
+    <img src="images/boom.png" alt="">
+
+
+    <script src="js/pinyin.js"></script>
+    <script src="js/pinyin2.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/Boom.js"></script>
+    <div class="btn-click">点我BOOM</div>
+    <script>
+        $(".btn-click").on("click", function (c) {
+            // boom($('div'))
+            boom($('img'))
+            $('p').fadeOut(1000)
+        })
+        // var result
+
+        // switch ('0') {
+        //     case '0':
+        //         result = pinyinUtil.getPinyin('长',
+        //             ' ', true, true);
+        //         break;
+        //         // case '1':
+        //         //     result = pinyinUtil.getPinyin(value,
+        //         //         ' ', false, polyphone);
+        //         //     break;
+        //         // case '2':
+        //         //     result = pinyinUtil.getFirstLetter(
+        //         //         value, polyphone);
+        //         //     break;
+        //     default:
+        //         break;
+        // }
+        // result = pinyinUtil.getPinyin('长城',
+        //     ' ', true, true);
+        // var html = result;
+        // console.log(html);
+
+        // let arr1 = ["cháng chéng", "zhǎng chén", 'ha'];
+        // let arr2 = ["cháng chéng", 'haha'];
+
+        // const result = arr2.map(searchTerm => arr1.findIndex((compareTerm) => compareTerm === searchTerm));
+
+        // console.log(result);
+        let arr1 = [
+            "fǒu dào cháng chéng fēi hǎo hàn",
+            'zhōng guó',
+            'zhòng guó',
+            'bù dào cháng chéng fēi hào hàn',
+            'fǒu dào cháng chéng fēi hào hàn',
+            'bù dào zhǎng chéng fēi hào hàn',
+            'fǒu dào zhǎng chéng fēi hào hàn',
+            "bù dào cháng chéng fēi hǎo hàn",
+        ];
+        // let arr2 = ['zhòng guó']
+        let arr2 = [{
+            category_id: 1,
+            pinyin: 'zhòng gu'
+        }, {
+            category_id: 1,
+            pinyin: 'zhòng guó '
+        }, {
+            category_id: 1,
+            pinyin: 'zhòng g u'
+        }, ];
+        // arr2 = ','.join(arr2)
+
+        arr2 = arr2.map(x => {
+            return x.pinyin
+        })
+        console.log(arr2);
+        // var a = ['hel p', 'bù dào cháng chéng fēi hào hàn']
+        // var b = a.join(',').replace(/\s+/g, '').split(',')
+        // // a.replace(/\s+/g, '')
+        // console.log(b);
+        const findIndexes = (param1, param2) => {
+            let arr1 = [...param1];
+            let arr2 = [...param2];
+
+
+            //swap the arrays if the no.of array elements
+            //in the second array are greater than first
+            // if (arr1.length < arr2.length) {
+            // [arr1, arr2] = [arr2, arr1];
+
+            // }
+            //Loop through all the items of the smaller array
+            //check if the element is present in the bigger array
+            return arr2.map(a2 => arr1.findIndex(a1 => a1 === a2)).filter(item => item != -1);
+        }
+
+        // console.log(findIndexes(arr1, arr2));
+        console.log(findIndexes(arr1, arr2));
+        var num = findIndexes(arr1, arr2)
+        console.log(num.length);
+    </script>
+
+</body>
+
+</html>

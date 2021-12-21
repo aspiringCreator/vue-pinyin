@@ -1,0 +1,72 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-12-09 18:04:18
+ * @LastEditTime: 2021-12-21 16:59:47
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \ccit-webe:\创正2021年\创正11月\拼音小游戏\1.html
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>JSCode demo</title>
+    <style type="text/css">
+        div {
+            width: 200px;
+            height: 300px;
+
+            background: #EEE;
+
+            position: absolute;
+            top: 301px;
+            left: 0;
+        }
+
+        #two {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            opacity: 0.8;
+            background: #F60;
+        }
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div id="one">One</div>
+    <div id="two">Two</div>
+    <!-- <div id="three">Three</div> -->
+    <!-- <h1 id="result"></h1> -->
+    <script type="text/javascript">
+        $("#result").text(isOverlap("one", "two"));
+
+        function isOverlap(idOne, idTwo) {
+            var objOne = $("#" + idOne),
+                objTwo = $("#" + idTwo),
+                offsetOne = objOne.offset(),
+                offsetTwo = objTwo.offset(),
+                topOne = offsetOne.top,
+                topTwo = offsetTwo.top,
+                leftOne = offsetOne.left,
+                leftTwo = offsetTwo.left,
+                widthOne = objOne.width(),
+                widthTwo = objTwo.width(),
+                heightOne = objOne.height(),
+                heightTwo = objTwo.height();
+            var leftTop = leftTwo > leftOne && leftTwo < leftOne + widthOne &&
+                topTwo > topOne && topTwo < topOne + heightOne,
+                rightTop = leftTwo + widthTwo > leftOne && leftTwo + widthTwo < leftOne + widthOne &&
+                topTwo > topOne && topTwo < topOne + heightOne,
+                leftBottom = leftTwo > leftOne && leftTwo < leftOne + widthOne &&
+                topTwo + heightTwo > topOne && topTwo + heightTwo < topOne + heightOne,
+                rightBottom = leftTwo + widthTwo > leftOne && leftTwo + widthTwo < leftOne + widthOne &&
+                topTwo + heightTwo > topOne && topTwo + heightTwo < topOne + heightOne;
+            return leftTop || rightTop || leftBottom || rightBottom;
+        }
+        var objOne = $("#one")
+        var objTwo = $("#two")
+        console.log((objOne.offset().top) - (objTwo.offset().top) - 301);
+    </script>
