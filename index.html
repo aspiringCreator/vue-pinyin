@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-30 15:48:30
- * @LastEditTime: 2021-12-21 18:50:06
+ * @LastEditTime: 2021-12-22 16:43:07
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/
 
@@ -222,7 +222,7 @@ controls></audio> -->
         </div>
         <!-- 关数 退出 分数 -->
         <div class="grade" style="display: none;">
-            <div class="nextBtn"></div>
+            <div class="nextBtn" @click='nextBtn'></div>
             <div class="share"></div>
             <div class="person"><img src="images/person.png" alt=""></div>
             <div class="name">殷桃小丸子</div>
@@ -254,6 +254,7 @@ controls></audio> -->
         var app = new Vue({
             el: '#app',
             data: {
+
                 jiushu: 0,
                 money: 0, //金币
                 active: false, //选中说话按钮样式
@@ -387,27 +388,36 @@ controls></audio> -->
                 },
                 //初始化定时器
                 startInterval: function (a) {
+
                     let _this = this
+                    _this.jiushu = 0
                     var num = -$(".words").innerHeight()
                     var dvheight = $(".grassland").innerHeight() - 40
-                    console.log(dvheight);
+                    console.log(dvheight, num);
                     console.log($(".words .list").innerHeight());
                     $('.words').css('top', this.num + 'px')
 
                     this.intervalBox = setInterval((a) => {
                         this.num++
 
+
+
                         for (var i = 0; i < $(".words .list").length; i++) {
                             // console.log(i);
                             if ($(".words .list").eq(i).offset().top - 20 == $(".grassland")
                                 .offset()
                                 .top) {
+                                // console.log(($(".words .list").eq(i).text().trim() == 'wú dí'));
+                                console.log(($(".words .list").eq(i).css('opacity')) == 1);
+                                if ($(".words .list").eq(i).css('opacity') == 1) { //false 星星减少
+                                    _this.jiushu++
+                                    // alert(1)
+                                    $('.xin').eq(_this.jiushu - 1).hide()
 
-                                _this.jiushu++
 
-                                // alert(_this.jiushu)
-                                // alert(i)
-                                $('.xin').eq(_this.jiushu - 1).hide()
+                                }
+
+
                                 // if (_this.jiushu == 3) {
                                 //     setTimeout(() => {
                                 //         // alert('挑战失败 游戏结束')
@@ -417,11 +427,17 @@ controls></audio> -->
 
                                 // }
                             }
-                            if (_this.jiushu == 3) {
-                                clearInterval(this.intervalBox)
-                                // alert('挑战失败')
-                            }
                         }
+
+                        if (_this.jiushu == 3) {
+                            clearInterval(this.intervalBox)
+                            setTimeout(() => {
+                                $('.start-game').css('opacity', '0')
+                                $('.grade').show()
+                                clearInterval(this.intervalBox)
+                            }, 1000)
+                        }
+
                         if (this.num > (Math.ceil($(".start-game").innerHeight() - dvheight))) {
                             $('.start-game').css('opacity', '0')
                             $('.grade').show()
@@ -437,12 +453,27 @@ controls></audio> -->
                         //         .height()) - ($(".grassland").offset().top +
                         //         $(".grassland").height()) < $(".grassland")
                         //     .height());
-                        console.log($(".grassland").offset().top + ',,,');
-                        console.log($(".words .list").eq(4).offset().top + '---');
+                        // console.log($(".grassland").offset().top + ',,,');
+                        // console.log($(".words .list").eq(4).offset().top + '---');
 
 
 
                     }, a);
+                },
+
+                //返回重新开始按钮
+                nextBtn: function () {
+                    $('.start-game').css('opacity', '1')
+                    $('.grade').hide()
+                    this.num = -$(".words").innerHeight()
+                    $('.xin').show()
+                    setTimeout(() => {
+                        this.startInterval(50)
+                        this.offsetTopStart()
+                    }, 1000)
+                    for (var i = 0; i < $(".words .list").length; i++) {
+                        $(".words .list").eq(i).css('opacity', '1')
+                    }
                 },
                 //结束interval定时器
                 stopInterval: function () {
@@ -450,10 +481,13 @@ controls></audio> -->
                 },
                 //点击开始按钮
                 startBtn: function () {
-
+                    $('.words .list').eq(8).css(
+                        'opacity',
+                        '0');
                     this.num = -$(".words").innerHeight()
                     $('#canvas').hide()
                     $('.start-game').css('opacity', '1')
+
                     setTimeout(() => {
                         this.startInterval(50)
                         this.offsetTopStart()
@@ -472,15 +506,25 @@ controls></audio> -->
                 },
                 //炸弹
                 boomBtn: function () {
-                    if (this.intervalBox) {
-                        this.intervalBox = clearInterval(this.intervalBox);
-                    } else {
-                        return;
-                    }
+                    // if (this.intervalBox) {
+                    //     this.intervalBox = clearInterval(this.intervalBox);
+                    // } else {
+                    //     return;
+                    // }
                     // this.stopInterval()
                     // console.log(1);
                     // this.num = -$(".words").innerHeight()
                     // this.startInterval()
+                    for (var i = 0; i < $(".words .list").length; i++) {
+                        if ($(".words .list").eq(i).offset().top >= -40) {
+                            $(".words .list").eq(i).css('opacity', '0')
+                        }
+                        if ($(".words .list").eq(0).css('opacity') == 0) {
+                            clearInterval(this.intervalBox); //清除interval定时器
+                            console.log('被你炸干净了');
+                        }
+                        // console.log($(".words .list").eq(8).offset().top + 'top');
+                    }
                 },
                 //点击头像 再次开始动画
                 personBtn: function () {
